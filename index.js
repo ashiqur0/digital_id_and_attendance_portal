@@ -37,6 +37,7 @@ async function run() {
         const classAttendanceCollection = db.collection('class_attendance');
         const libraryEntriesCollection = db.collection('library_entries');
         const campusEventCollection = db.collection('campus_event');
+        const studentsCollection = db.collection('sdudents');
 
         // event related api
         app.post('/event', async(req, res) => {
@@ -73,6 +74,19 @@ async function run() {
 
         app.get('/attendance', async(req, res) => {
             const cursor = classAttendanceCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        });
+
+        // students related api
+        app.post('/students', async(req, res) => {
+            const sdudents = req.body;
+            const result = await studentsCollection.insertMany(sdudents);
+            res.send(result);
+        });
+
+        app.get('/students', async(req, res) => {
+            const cursor = studentsCollection.find();
             const result = await cursor.toArray();
             res.send(result);
         });
